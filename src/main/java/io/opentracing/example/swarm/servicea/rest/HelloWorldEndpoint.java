@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import org.hawkular.apm.client.opentracing.APMTracer;
 
+import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 
 
@@ -22,6 +23,10 @@ public class HelloWorldEndpoint {
 	@Produces("text/plain")
 	public Response doGet() {
 		System.out.println(GlobalTracer.get());
+
+		Tracer tracer = GlobalTracer.get();
+		tracer.buildSpan("myspan").start().setTag("component", "mycomponent").setOperationName("theoperation").close();
+
 		return Response.ok("Hello from WildFly Swarm!").build();
 	}
 }
