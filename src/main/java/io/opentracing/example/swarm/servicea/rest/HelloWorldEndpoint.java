@@ -6,7 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import io.opentracing.NoopTracerFactory;
+import org.hawkular.apm.client.opentracing.APMTracer;
+
 import io.opentracing.util.GlobalTracer;
 
 
@@ -14,7 +15,7 @@ import io.opentracing.util.GlobalTracer;
 public class HelloWorldEndpoint {
 
 	static {
-        GlobalTracer.register(NoopTracerFactory.create());
+        GlobalTracer.register(new APMTracer());
 	}
 
 	@GET
