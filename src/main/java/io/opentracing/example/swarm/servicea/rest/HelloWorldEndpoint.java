@@ -11,17 +11,13 @@ import javax.ws.rs.core.Response;
 import org.hawkular.apm.client.opentracing.APMTracer;
 
 import io.opentracing.Span;
+import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 
 
 @Path("/hello")
 public class HelloWorldEndpoint {
-
-	static {
-        GlobalTracer.register(new APMTracer());
-	}
-
 	@Context HttpServletRequest request;
 
 	@GET
@@ -30,14 +26,17 @@ public class HelloWorldEndpoint {
 		Tracer tracer = GlobalTracer.get();
 		// TODO: check whether extracting from the http request _should_ render the same result as getting the request attribute
 		// SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new HttpServletRequestExtractAdapter(request));
-		Span requestContext = (Span) request.getAttribute("io.opentracing.contrib.web.servlet.filter.TracingFilter.activeSpanContext");
-		tracer
+		SpanContext requestContext = (SpanContext) request.getAttribute("io.opentracing.contrib.web.servlet.filter.TracingFilter.activeSpanContext");
+		Span businessSpan = tracer
 				.buildSpan("myspan")
 				.asChildOf(requestContext)
 				.start()
 				.setTag("component", "mycomponent")
-				.setOperationName("theoperation")
-				.close();
+				.setOperationName("theoperation");
+
+		// do some business operation
+
+		businessSpan.close();
 
 		return Response.ok("Hello from WildFly Swarm!").build();
 	}
