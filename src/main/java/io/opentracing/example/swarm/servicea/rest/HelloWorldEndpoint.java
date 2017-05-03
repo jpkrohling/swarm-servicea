@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import org.hawkular.apm.client.opentracing.APMTracer;
 
+import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.web.servlet.filter.HttpServletRequestExtractAdapter;
@@ -32,10 +33,12 @@ public class HelloWorldEndpoint {
 	@Produces("text/plain")
 	public Response doGet() {
 		Tracer tracer = GlobalTracer.get();
-		SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new HttpServletRequestExtractAdapter(request));
+		// TODO: check whether extracting from the http request _should_ render the same result as getting the request attribute
+		// SpanContext spanContext = tracer.extract(Format.Builtin.HTTP_HEADERS, new HttpServletRequestExtractAdapter(request));
+		Span requestContext = (Span) request.getAttribute("io.opentracing.contrib.web.servlet.filter.TracingFilter.activeSpanContext");
 		tracer
 				.buildSpan("myspan")
-				.asChildOf(spanContext)
+				.asChildOf(requestContext)
 				.start()
 				.setTag("component", "mycomponent")
 				.setOperationName("theoperation")
