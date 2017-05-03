@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.opentracing.example.swarm.servicea.rest;
+package io.opentracing.example.swarm.servlet.rest;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
