@@ -1,8 +1,6 @@
 package io.opentracing.example.swarm.servicea.rest;
 
 
-import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,10 +11,7 @@ import javax.ws.rs.core.Response;
 import org.hawkular.apm.client.opentracing.APMTracer;
 
 import io.opentracing.Span;
-import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
-import io.opentracing.contrib.web.servlet.filter.HttpServletRequestExtractAdapter;
-import io.opentracing.propagation.Format;
 import io.opentracing.util.GlobalTracer;
 
 
