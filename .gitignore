@@ -5,4 +5,10 @@ target/
 .idea
 *.iml
 
+# VSS code
+.vscode
 
+# Eclipse
+.project
+.settings
+.classpath
